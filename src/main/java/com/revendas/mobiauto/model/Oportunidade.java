@@ -1,38 +1,56 @@
 package com.revendas.mobiauto.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-
-
 import java.time.LocalDateTime;
 
 @Entity
+@Schema(description = "Modelo que representa uma oportunidade no sistema de revendas")
 public class Oportunidade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "ID da oportunidade", example = "1", required = true)
     private Long id;
 
+    @Schema(description = "Nome do cliente", example = "Cliente Exemplo", required = true)
     private String nomeCliente;
+
+    @Schema(description = "Email do cliente", example = "cliente@examplo.com", required = true)
     private String emailCliente;
+
+    @Schema(description = "Telefone do cliente", example = "(11) 98765-4321", required = true)
     private String telefoneCliente;
+
+    @Schema(description = "Marca do veículo que tem interesse", example = "Honda", required = true)
     private String marcaVeiculo;
+
+    @Schema(description = "Modelo do veículo que tem interesse", example = "HRV", required = true)
     private String modeloVeiculo;
+
+    @Schema(description = "Versão do veículo que tem interesse", example = "2.0 LTS", required = true)
     private String versaoVeiculo;
+
+    @Schema(description = "Ano do modelo do veículo que tem interesse", example = "2023", required = true)
     private Integer anoModelo;
 
     @Enumerated(EnumType.STRING)
+    @Schema(description = "Status da oportunidade", example = "NOVO", required = true)
     private StatusOportunidade status = StatusOportunidade.NOVO;
 
+    @Schema(description = "Motivo de conclusão da oportunidade")
     private String motivoConclusao;
     private LocalDateTime dataAtribuicao;
     private LocalDateTime dataConclusao;
 
     @ManyToOne
     @JoinColumn(name = "responsavel_id")
+    @Schema(description = "Usuário responsável pela oportunidade", required = true)
     private Usuario responsavel;
 
     @ManyToOne
     @JoinColumn(name = "revenda_id")
+    @Schema(description = "Revenda associada à oportunidade", required = true)
     private Revenda revenda;
 
     public Long getId() {

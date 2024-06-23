@@ -1,24 +1,31 @@
 package com.revendas.mobiauto.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
+@Schema(description = "Modelo que representa uma revenda no sistema")
 public class Revenda {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "ID da revenda", example = "1", required = true)
     private Long id;
 
     @Column(unique = true, nullable = false)
+    @Schema(description = "CNPJ da revenda", example = "12.345.678/0001-99", required = true)
     private String cnpj;
 
+    @Schema(description = "Nome social da revenda", example = "Revenda Mobi Recife Centro", required = true)
     private String nomeSocial;
 
     @OneToMany(mappedBy = "revenda")
+    @Schema(description = "Lista de usuários associados à revenda")
     private List<Usuario> usuarios;
 
     @OneToMany(mappedBy = "revenda")
+    @Schema(description = "Lista de revendas associados ao usuário")
     private List<Oportunidade> oportunidades;
 
     public Long getId() {

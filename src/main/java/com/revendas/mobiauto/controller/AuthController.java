@@ -6,10 +6,12 @@ import com.revendas.mobiauto.service.UsuarioService;
 import com.revendas.mobiauto.dto.JwtRequest;
 import com.revendas.mobiauto.dto.JwtResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,6 +26,9 @@ public class AuthController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
     public JwtResponse createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
@@ -41,7 +46,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public Usuario registerUser(@RequestBody Usuario usuario) {
-        return usuarioService.save(usuario);
+    public ResponseEntity<Usuario> register(@RequestBody Usuario usuario) {
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        return ResponseEntity.ok(usuarioService.save(usuario));
     }
 }
